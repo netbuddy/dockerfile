@@ -1,0 +1,25 @@
+version: '3'
+services:
+  semaphore:
+    ports:
+      - "${LOCAL_PORT}:3000"
+    image: semaphoreui/semaphore:latest
+    hostname: semaphore
+    restart: always
+    user: "${UID}:${GID}"
+    environment:
+      SEMAPHORE_DB_DIALECT: bolt
+      SEMAPHORE_ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      SEMAPHORE_ADMIN_NAME: "${ADMIN_NAME}"
+      SEMAPHORE_ADMIN_EMAIL: admin@localhost
+      SEMAPHORE_ADMIN: admin
+      TZ: Asia/Shanghai
+    volumes:
+      - semaphore_config:/etc/semaphore
+      - semaphore_db:/var/lib/semaphore
+      - "${PLAYBOOK_PATH}:/playbook"
+      - "${SSH_PATH}:~/.ssh"
+
+volumes:
+  semaphore_config:
+  semaphore_db:
